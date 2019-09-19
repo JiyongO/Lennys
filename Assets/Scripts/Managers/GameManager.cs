@@ -27,6 +27,8 @@ namespace SA
 
         public Unit unit;
 
+        public float editRadius = 6;
+
         public static GameManager singleton;
         private void Awake()
         {
@@ -89,12 +91,19 @@ namespace SA
                     Color c = Color.white;
                     c.a = 0;
 
+                    Vector3 center = GetWorldPosFromNode(curNode);
+                    float radius = editRadius * posOffset;
+
                     for (int x = -6; x < 6; x++)
                     {
                         for (int y = -6; y < 6; y++)
                         {
                             int t_x = x + curNode.x;
                             int t_y = y + curNode.y;
+
+                            float d = Vector3.Distance(center, GetWorldPosFromNode(t_x, t_y));
+                            if (d > radius)
+                                continue;
 
                             Node n = GetNode(t_x, t_y);
                             if (n == null)

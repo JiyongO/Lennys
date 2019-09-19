@@ -11,8 +11,11 @@ namespace SA
         Node targetNode;
 
         public bool move;
+        bool movingLeft;
         public float lerpSpeed = 1;
+        public SpriteRenderer ren;
         float baseSpeed;
+
         bool initLerp;
         Vector3 targetPos;
         Vector3 startPos;
@@ -69,6 +72,8 @@ namespace SA
                 Vector3 tp = Vector3.Lerp(startPos, targetPos, t);
                 transform.position = tp;
             }
+
+            ren.flipX = movingLeft;
         }
 
         void Pathfind()
@@ -76,19 +81,56 @@ namespace SA
             t_x = curNode.x;
             t_y = curNode.y;
 
-            Node nextDown = gameManager.GetNode(t_x, t_y - 1);
-            if (nextDown == null)
-                return;
-            if (!nextDown.isEmpty)
+            bool downIsAir = IsAir(t_x, t_y - 1);
+            bool fowardIsAir = IsAir(t_x, t_y);
+
+            if (downIsAir)
             {
-                t_y = curNode.y;
+                t_x = curNode.x;
+                t_y -= 1;
             }
             else
             {
-                t_y -= 1;
-            }
+                if (fowardIsAir)
+                {
+                    t_x = (movingLeft) ? t_x - 1 : t_x + 1;
+                    t_y = curNode.y;
+                }
+                else
+                {
+                    int s = 0;
+                    bool isValid = false;
+                    while (s < 3)
+                    {
+                        s++;
+                        bool f_isAir = IsAir(t_x, t_y + s);
+                        if (f_isAir)
+                        {
+                            isValid = true;
+                            break;
+                        }
+                    }
 
+                    if (isValid)
+                    {
+                        t_y += s;
+                    }
+                    else
+                    {
+                        movingLeft = !movingLeft;
+                        t_x = (movingLeft) ? curNode.x - 1 : curNode.y + 1;
+                    }
+                }
+            }
             targetNode = gameManager.GetNode(t_x, t_y);
+        }
+
+        bool IsAir(int x, int y)
+        {
+            Node n = gameManager.GetNode(x, y);
+            if (n == null)
+                return true;
+            return n.isEmpty;
         }
     }
 }

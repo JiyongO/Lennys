@@ -361,6 +361,7 @@ MonoBehaviour:
   spawnTransform: {fileID: 337378385}
   spawnPosition: {x: 0, y: 0, z: 0}
   unit: {fileID: 762569929}
+  editRadius: 6
 --- !u!1 &762569928
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,6 +393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   move: 1
   lerpSpeed: 1
+  ren: {fileID: 1273632189}
 --- !u!4 &762569930
 Transform:
   m_ObjectHideFlags: 0
