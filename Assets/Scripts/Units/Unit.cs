@@ -93,7 +93,7 @@ namespace SA
             {
                 if (fowardIsAir)
                 {
-                    t_x = (movingLeft) ? t_x - 1 : t_x + 1;
+                    t_x = (movingLeft) ? t_x - 1 : t_x + 1; 
                     t_y = curNode.y;
                 }
                 else
